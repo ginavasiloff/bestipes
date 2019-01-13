@@ -1,25 +1,29 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
 
-class App extends Component {
+import { Card } from "@rmwc/card";
+import { Grid, GridCell } from "@rmwc/grid";
+import { Typography } from "@rmwc/typography";
+
+import { Recipe } from "./recipe";
+import { mockRecipe } from "./recipe-defs";
+
+import "material-components-web/dist/material-components-web.min.css";
+import "./App.css";
+
+const recipes = [mockRecipe, mockRecipe, mockRecipe];
+
+class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Typography use="headline3">Recipes</Typography>
+        <Grid>
+          {recipes.map(r => (
+            <GridCell span={4}>
+              <Card>{r.name}</Card>
+            </GridCell>
+          ))}
+        </Grid>
       </div>
     );
   }
