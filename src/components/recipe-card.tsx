@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { Link } from "react-router-dom";
 import {
   Card,
   CardAction,
@@ -12,7 +13,9 @@ import {
 import { List, SimpleListItem } from "@rmwc/list";
 import { Typography } from "@rmwc/typography";
 
-import { RecipeT } from "./recipe-defs";
+import { RecipeT } from "../recipe-defs";
+
+import { slugify } from "../utils";
 
 type OwnPropsT = {
   recipe: RecipeT;
@@ -27,6 +30,7 @@ export class RecipeCard extends React.Component<OwnPropsT, OwnStateT> {
     super(props);
     this.state = { isShowingIngredients: false };
   }
+
   render() {
     const recipe = this.props.recipe;
     return (
@@ -69,13 +73,9 @@ export class RecipeCard extends React.Component<OwnPropsT, OwnStateT> {
         )}
         <CardActions>
           <CardActionButtons>
-            <CardAction
-              onClick={() => this.setState({ isShowingIngredients: true })}
-            >
-              ingredients
-            </CardAction>
-            <CardAction onClick={() => console.log("show recipe")}>
-              full recipe
+            <CardAction>ingredients</CardAction>
+            <CardAction>
+              <Link to={`/recipe/${slugify(recipe.name)}`}>full recipe</Link>
             </CardAction>
           </CardActionButtons>
         </CardActions>
