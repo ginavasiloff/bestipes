@@ -1,41 +1,28 @@
 import * as React from "react";
-
-import { Typography } from "@rmwc/typography";
-import { List, ListItem, SimpleListItem } from "@rmwc/list";
+import { List, ListItem, Paper, makeStyles, Typography } from "@material-ui/core"
+import { key } from '../utils'
 import { RecipeT } from "../recipe-defs";
 
-import styles from "./recipe.module.css";
+export const Recipe = ({ recipe }: { recipe: RecipeT }) => {
 
-export const Recipe = ({ recipe }: { recipe: RecipeT | undefined }) => {
-  return !!recipe ? (
-    <React.Fragment>
-      <Typography use="headline4">{recipe.name}</Typography>
-      <div className={styles.recipe}>
-        <div className={styles.ingredients}>
-          <Typography use="headline6">Ingredients</Typography>
-          <List twoLine>
-            {recipe.ingredients.map((i, idx) => (
-              <SimpleListItem
-                id={`${idx}-${i.name.replace(" ", "-")}`}
-                secondaryText={i.details}
-                text={`${i.quantity} ${i.name}`}
-              />
-            ))}
-          </List>
-        </div>
-        <div className={styles.instructions}>
-          <Typography use="headline6">Instructions</Typography>
-          <div className={styles.steps}>
-            {recipe.instructions.map((i, idx) => (
-              <Typography tag="p" key={`step-${idx}`} use="body1">
-                {i}
-              </Typography>
-            ))}
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
-  ) : (
-    <div>no recipe found</div>
-  );
-};
+  const styles = makeStyles({
+    main: {
+      padding: "20px"
+    }
+  })();
+  return (
+    <div className={styles.main}>
+      <Paper>
+        <Typography>{recipe.name}</Typography>
+        <img src={recipe.image} alt={recipe.name} />
+        {recipe.prepTime && <span>Total Prep Time: {recipe.prepTime.total}</span>}
+        <List key={recipe.id}>
+          {recipe.ingredients.map(i => (<ListItem key={key()}><span>{i.name}</span><span>{i.quantity}</span>{i.details && <span>{i.details}</span>}</ListItem>))}
+        </List>
+        {/*<List>
+          {recipe.instructions.map(i => (<ListItem>{i}</ListItem>))}
+        </List> */}
+      </Paper>
+    </div>
+  )
+}

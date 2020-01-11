@@ -2,14 +2,6 @@
   "name": "bestipes",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@types/react-router-dom": "^4.3.1",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.3",
-    "rmwc": "^4.0.6"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -25,13 +17,19 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2"
+  },
   "devDependencies": {
-    "prettier-tslint": "^0.4.2",
-    "typescript": "3.2.2",
-    "@types/webpack-env": "^1.13.6",
-    "@types/jest": "23.3.12",
-    "@types/node": "10.12.18",
-    "@types/react": "16.7.18",
-    "@types/react-dom": "16.0.11"
+    "@material-ui/core": "^4.8.2",
+    "@material-ui/icons": "^4.5.1",
+    "@types/react-dom": "^16.9.4",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/webpack-env": "^1.15.0",
+    "react-scripts": "^3.3.0",
+    "typescript": "^3.7.4"
   }
 }

@@ -1,83 +1,77 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import { ThemeProvider } from '@rmwc/theme';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { RecipeGrid } from './views/recipe-grid';
 import { Recipe } from './views/recipe';
 import { NewRecipe } from './views/new-recipe';
-import { mockRecipes } from './recipe-defs';
+import { RecipeT } from './recipe-defs';
+import { getRecipes } from './api/recipes-api'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Paper } from '@material-ui/core'
 
 import { MatchT } from './app-defs';
 
-import {
-  Toolbar,
-  ToolbarRow,
-  ToolbarSection,
-  ToolbarTitle,
-} from '@rmwc/toolbar';
-import { Typography } from '@rmwc/typography';
-
-import 'material-components-web/dist/material-components-web.min.css';
 import './App.css';
 import { slugify } from './utils';
 
+const theme = createMuiTheme({
+  palette: {
+    secondary: {
+      main: '#ffffff'
+    }
+  },
+  typography: {
+    fontSize: 12,
+    h1: {
+      fontSize: '2rem'
+    },
+    h3: {
+      fontSize: '1.25rem'
+    }
+  },
+});
+
+
+
 class App extends React.Component {
+  state = { recipes: [] };
+
+  componentDidMount() {
+    getRecipes().then(recipes => this.setState({ recipes }));
+  }
+
   render() {
+    const recipes: RecipeT[] = this.state.recipes;
     return (
-      <ThemeProvider
-        options={{
-          primary: '#17BEE7',
-          secondary: 'rgb(179, 225, 232)',
-          background: '#E5FFFC',
-        }}
-      >
-        <div className='App'>
+      <div className='App'>
+        <ThemeProvider theme={theme}>
           <Router>
-            <React.Fragment>
-              <Toolbar>
-                <ToolbarRow>
-                  <ToolbarSection>
-                    <ToolbarTitle>
-                      <Link to='/'>
-                        <Typography
-                          use='headline4'
-                          theme='text-primary-on-dark'
-                        >
-                          Bestipes
-                        </Typography>
-                      </Link>
-                    </ToolbarTitle>
-                  </ToolbarSection>
-                </ToolbarRow>
-              </Toolbar>
-              <Switch>
-                <Route
-                  exact
-                  path='/'
-                  component={({ match }: { match: MatchT }) => (
-                    <RecipeGrid match={match} recipes={mockRecipes} />
-                  )}
-                />
-                <Route
-                  exact
-                  path='/recipe/new'
-                  component={() => <NewRecipe />}
-                />
-                <Route
-                  path='/recipe/:name'
-                  component={({ match }: { match: MatchT }) => (
-                    <Recipe
-                      recipe={mockRecipes.find(
-                        r => slugify(r.name) === match.params.name,
-                      )}
-                    />
-                  )}
-                />
-              </Switch>
-            </React.Fragment>
+            <Switch>
+              <Route
+                exact
+                path='/'
+                component={() => (
+                  <RecipeGrid recipes={recipes} />
+                )}
+              />
+              <Route
+                exact
+                path='/recipe/new'
+                component={() => <NewRecipe />}
+              />
+              <Route
+                path='/recipe/:name'
+                component={({ match }: { match: MatchT }) => {
+                  const recipe = recipes.find(r => slugify(r.name) === match.params.name);
+                  return (recipe ?
+                    <Recipe recipe={recipe} />
+                    : <Paper>404</Paper>)
+                }}
+              />
+            </Switch>
           </Router>
-        </div>
-      </ThemeProvider>
+        </ThemeProvider >
+      </div >
     );
   }
 }

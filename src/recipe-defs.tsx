@@ -1,8 +1,7 @@
-import { string } from "prop-types";
-
 export type IngredientT = { name: string; quantity: string; details?: string };
 
 export type RecipeT = {
+  id: string;
   name: string;
   ingredients: IngredientT[];
   instructions: string[];
@@ -14,6 +13,7 @@ export type RecipeT = {
 
 const potPie: RecipeT = {
   name: "Chickless Pot Pie",
+  id: "1234",
   ingredients: [
     { name: "carrots", quantity: "1 cup", details: "thinly sliced" },
     { name: "frozen peas", quantity: "1 cup" },
@@ -50,6 +50,7 @@ const potPie: RecipeT = {
 
 const gnocchi: RecipeT = {
   name: "skillet gnocchi with chard and white beans",
+  id: "93891-1",
   ingredients: [
     { name: "extra virgin olive oil", quantity: "1 tablespoon" },
     { name: "shelf-stable gnocchi", quantity: "1 (16 ounce) package" },
@@ -75,6 +76,7 @@ const gnocchi: RecipeT = {
 
 const cookies: RecipeT = {
   name: "chewy crispy coconut cookies",
+  id: "dshagdlafk",
   ingredients: [
     { name: "butter substitute", quantity: "1/2 cup" },
     { name: "brown sugar", quantity: "1/2 cup" },
@@ -101,6 +103,7 @@ const cookies: RecipeT = {
 
 const potstickers: RecipeT = {
   name: "Potstickers",
+  id: "walj-hkjljp",
   source:
     "https://loveisinmytummy.com/2016/10/vegan-potstickers-pan-fried-dumplings-gyoza.html",
   image:
