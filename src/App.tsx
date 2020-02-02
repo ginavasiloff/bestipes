@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { RecipeGrid } from './views/recipe-grid';
 import { Recipe } from './views/recipe';
 import { NewRecipe } from './views/new-recipe';
-import { RecipeT } from './recipe-defs';
-import { getRecipes } from './api/recipes-api'
+import { RecipeT } from './data/recipe-defs';
+import { getRecipes } from './data/recipes-api';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core'
+import { Paper } from '@material-ui/core';
 
 import { MatchT } from './app-defs';
 
@@ -28,10 +28,8 @@ const theme = createMuiTheme({
     h3: {
       fontSize: '1.25rem'
     }
-  },
+  }
 });
-
-
 
 class App extends React.Component {
   state = { recipes: [] };
@@ -50,28 +48,26 @@ class App extends React.Component {
               <Route
                 exact
                 path='/'
-                component={() => (
-                  <RecipeGrid recipes={recipes} />
-                )}
+                component={() => <RecipeGrid recipes={recipes} />}
               />
-              <Route
-                exact
-                path='/recipe/new'
-                component={() => <NewRecipe />}
-              />
+              <Route exact path='/recipe/new' component={() => <NewRecipe />} />
               <Route
                 path='/recipe/:name'
                 component={({ match }: { match: MatchT }) => {
-                  const recipe = recipes.find(r => slugify(r.name) === match.params.name);
-                  return (recipe ?
+                  const recipe = recipes.find(
+                    r => slugify(r.name) === match.params.name
+                  );
+                  return recipe ? (
                     <Recipe recipe={recipe} />
-                    : <Paper>404</Paper>)
+                  ) : (
+                    <Paper>404</Paper>
+                  );
                 }}
               />
             </Switch>
           </Router>
-        </ThemeProvider >
-      </div >
+        </ThemeProvider>
+      </div>
     );
   }
 }

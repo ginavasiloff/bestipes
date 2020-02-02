@@ -1,11 +1,18 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Link } from "react-router-dom";
-import { Card, CardActions, CardActionArea, CardMedia, List, ListItem } from "@material-ui/core";
+import { Link } from 'react-router-dom';
+import {
+  Card,
+  CardActions,
+  CardActionArea,
+  CardMedia,
+  List,
+  ListItem
+} from '@material-ui/core';
 
-import { RecipeT } from "../recipe-defs";
+import { RecipeT } from '../data/recipe-defs';
 
-import { slugify } from "../utils";
+import { slugify } from '../utils';
 
 type OwnPropsT = {
   recipe: RecipeT;
@@ -26,9 +33,7 @@ export class RecipeCard extends React.Component<OwnPropsT, OwnStateT> {
     return (
       <Card>
         <CardActionArea>
-          <CardMedia
-            style={{ backgroundImage: `url(${recipe.image})` }}
-          >
+          <CardMedia style={{ backgroundImage: `url(${recipe.image})` }}>
             {recipe.name}
           </CardMedia>
         </CardActionArea>
@@ -41,13 +46,12 @@ export class RecipeCard extends React.Component<OwnPropsT, OwnStateT> {
               ))}
             </List>
           </div>
-        )
-        }
+        )}
         <CardActions>
           ingredients
-              <Link to={`/recipe/${slugify(recipe.name)}`}>full recipe</Link>
+          <Link to={`/recipe/${slugify(recipe.name)}`}>full recipe</Link>
         </CardActions>
-      </Card >
+      </Card>
     );
   }
 }
