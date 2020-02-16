@@ -1,4 +1,4 @@
-import { RecipeT } from './recipe-defs';
+import { RecipeT, IngredientT } from './recipe-defs';
 
 const data_url = 'http://localhost:5000/recipes'; // TODO: don't hardcode
 
@@ -23,6 +23,7 @@ export const validateRecipe = (obj: Partial<RecipeT>): RecipeT | null => {
   if (!obj.name || !obj.ingredients || !obj.instructions || !obj.image) {
     return null;
   }
+  if (!obj.ingredients.every(i => isValidIngredient(i))) return null;
   return {
     _id: obj._id || Date.now().toString(),
     name: obj.name,
@@ -31,4 +32,15 @@ export const validateRecipe = (obj: Partial<RecipeT>): RecipeT | null => {
     instructions: obj.instructions,
     image: obj.image
   };
+};
+
+export const isValidIngredient = (obj: any): boolean => {
+  const hasRequiredKeys = obj.name && obj.quantity;
+  const hasOnlyValidKeys = Object.keys(obj).every(
+    k => k === 'name' || k === 'quantity' || k === 'details'
+  );
+  const hasApprovedValues = Object.keys(obj).every(
+    k => typeof obj[k] === 'string' && obj[k].trim() !== ''
+  );
+  return hasRequiredKeys && hasOnlyValidKeys && hasApprovedValues;
 };

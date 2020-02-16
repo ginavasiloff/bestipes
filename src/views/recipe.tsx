@@ -15,7 +15,7 @@ export const Recipe = ({ recipe }: { recipe: RecipeT }) => {
       padding: '20px'
     }
   })();
-  // @ts-ignore
+
   return (
     <div className={styles.main}>
       <Paper>

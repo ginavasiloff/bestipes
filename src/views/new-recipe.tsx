@@ -9,65 +9,56 @@ import {
   Typography
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { key } from '../utils';
+import DeleteIcon from '@material-ui/icons/Delete';
 import styles from './new-recipe.module.css';
 import { IngredientT, RecipeT } from '../data/recipe-defs';
 import { postRecipe, validateRecipe } from '../data/recipes-api';
 
-export function NewRecipe() {
-  const newRecipe: Partial<RecipeT> = {
-    name: undefined,
-    source: undefined,
-    image: undefined,
+export const NewRecipe = () => {
+  const newRecipe: RecipeT = {
+    _id: '',
+    name: '',
+    source: '',
+    image: '',
     ingredients: [],
     instructions: []
   };
+
+  const newIngredient = {
+    name: '',
+    quantity: ''
+  };
+
   const [recipe, setRecipe] = useState(newRecipe);
 
   const handleUpdateRecipe = (key: string, value: any) => {
     setRecipe({ ...recipe, [key]: value });
   };
 
+  const handleUpdateIngredient = (idx: number, ingredient: IngredientT) => {
+    const ingredients = [
+      ...recipe.ingredients.slice(0, idx),
+      ingredient,
+      ...recipe.ingredients.slice(idx + 1)
+    ];
+    setRecipe({ ...recipe, ingredients });
+  };
+
+  const handleDeleteIngredient = (idx: number) => {
+    const ingredients = [
+      ...recipe.ingredients.slice(0, idx),
+      ...recipe.ingredients.slice(idx + 1)
+    ];
+    setRecipe({ ...recipe, ingredients });
+  };
+
   const handleUpdateInstructions = (instruction: string, idx: number) => {
-    const instructions = recipe.instructions ?? [];
-    instructions.length >= idx
-      ? handleUpdateRecipe('instructions', [
-          ...instructions.slice(0, idx),
-          instruction,
-          ...instructions.slice(idx + 1)
-        ])
-      : handleUpdateRecipe('instructions', [...instructions, instruction]);
-  };
-
-  const handleUpdateIngredient = (ingredient: IngredientT) => {
-    const ingredients = recipe.ingredients ?? [];
-    const idx = ingredients.findIndex(i => i.name === ingredient.name);
-    const updated =
-      idx >= 0
-        ? [
-            ...ingredients.slice(0, idx),
-            ingredient,
-            ...ingredients.slice(idx + 1)
-          ]
-        : [...ingredients, ingredient];
-
-    handleUpdateRecipe('ingredients', updated);
-  };
-
-  const handleChangeIngredientName = (oldName: string, newName: string) => {
-    const ingredients = recipe.ingredients ?? [];
-    const idx = ingredients.findIndex(i => i.name === oldName);
-    const ingredient = { ...ingredients[idx], name: newName };
-    const updated =
-      idx >= 0
-        ? [
-            ...ingredients.slice(0, idx),
-            ingredient,
-            ...ingredients.slice(idx + 1)
-          ]
-        : [...ingredients, ingredient];
-
-    handleUpdateRecipe('ingredients', updated);
+    const instructions = [
+      ...recipe.instructions.slice(0, idx),
+      instruction,
+      ...recipe.instructions.slice(idx + 1)
+    ];
+    setRecipe({ ...recipe, instructions });
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -101,44 +92,76 @@ export function NewRecipe() {
           <div>
             <Typography variant='h3'>
               Ingredients{' '}
-              <IconButton size='small' color='primary'>
+              <IconButton
+                size='small'
+                color='primary'
+                onClick={() => {
+                  handleUpdateRecipe('ingredients', [
+                    ...recipe.ingredients,
+                    newIngredient
+                  ]);
+                }}
+              >
                 <AddIcon />
               </IconButton>
             </Typography>
-            {recipe?.ingredients?.map(
-              (i: { name: string; quantity: string }) => (
-                <div className={styles.ingredient} key={key()}>
-                  <TextField
-                    onChange={e =>
-                      handleChangeIngredientName(i.name, e.target.value)
-                    }
-                  />
-                  <TextField
-                    onChange={e =>
-                      handleUpdateIngredient({
-                        ...i,
-                        quantity: e.target.value
-                      })
-                    }
-                  />
-                </div>
-              )
-            )}
-            <div className={styles.ingredient}>
-              <TextField label='ingredient' />
-              <TextField label='amount' />
-            </div>
+            {recipe.ingredients.map((i, idx) => (
+              <div className={styles.ingredient}>
+                <TextField
+                  label='ingredient'
+                  value={i.name}
+                  onChange={e =>
+                    handleUpdateIngredient(idx, {
+                      ...i,
+                      name: e.target.value
+                    })
+                  }
+                />
+                <TextField
+                  label='amount'
+                  value={i.quantity}
+                  onChange={e =>
+                    handleUpdateIngredient(idx, {
+                      ...i,
+                      quantity: e.target.value
+                    })
+                  }
+                />
+                <IconButton
+                  size='small'
+                  color='primary'
+                  onClick={() => {
+                    handleDeleteIngredient(idx);
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </div>
+            ))}
           </div>
           <div>
-            <Typography variant='h3'>Instructions</Typography>
-            {recipe?.instructions?.map((step: string, idx: number) => (
+            <Typography variant='h3'>
+              Instructions{' '}
+              <IconButton
+                size='small'
+                color='primary'
+                onClick={() => {
+                  handleUpdateRecipe('instructions', [
+                    ...recipe.instructions,
+                    ''
+                  ]);
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Typography>
+            {recipe.instructions.map((step: string, idx: number) => (
               <TextareaAutosize
-                key={key()}
-                defaultValue={step}
+                key={idx}
+                value={step}
                 onChange={e => handleUpdateInstructions(e.target.value, idx)}
               />
             ))}
-            <TextareaAutosize></TextareaAutosize>
           </div>
           <Button type='submit' color='primary'>
             Submit
@@ -147,4 +170,4 @@ export function NewRecipe() {
       </Paper>
     </div>
   );
-}
+};

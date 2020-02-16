@@ -1,4 +1,9 @@
-import { getRecipes, postRecipe, validateRecipe } from './recipes-api';
+import {
+  getRecipes,
+  postRecipe,
+  isValidIngredient,
+  validateRecipe
+} from './recipes-api';
 import { mockRecipes } from './recipe-defs';
 
 test('getRecipes gets an array', async () => {
@@ -21,5 +26,51 @@ test('validate recipe', () => {
     image: recipe.image,
     source: recipe.source,
     ingredients: recipe.ingredients
+  });
+});
+
+describe(isValidIngredient, () => {
+  it('ensures an ingredient has only a name, quantity, and optional details', () => {
+    expect(
+      isValidIngredient({
+        name: 'sugar',
+        quantity: '1/2 cup',
+        inValidKey: true
+      })
+    ).toBe(false);
+    expect(
+      isValidIngredient({
+        name: 'sugar',
+        quantity: '1/2 cup'
+      })
+    ).toBe(true);
+    expect(
+      isValidIngredient({
+        name: 'sugar',
+        quantity: '1 cup',
+        details: 'unbleached is preferred'
+      })
+    ).toBe(true);
+  });
+
+  it('ensures all properties are strings', () => {
+    expect(
+      isValidIngredient({ name: 1, quantity: 'string', details: 'string' })
+    ).toBe(false);
+    expect(
+      isValidIngredient({ name: 'string', quantity: 1, details: 'string' })
+    ).toBe(false);
+    expect(
+      isValidIngredient({ name: 'string', quantity: 'string', details: 1 })
+    ).toBe(false);
+  });
+
+  it('ensures no properties are empty', () => {
+    expect(
+      isValidIngredient({
+        name: 'sugar',
+        quantity: ' '
+      })
+    ).toBe(false);
   });
 });
