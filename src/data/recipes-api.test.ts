@@ -1,21 +1,22 @@
 import {
   getRecipes,
-  postRecipe,
+  // postRecipe,
   isValidIngredient,
-  validateRecipe
+  validateRecipe,
 } from './recipes-api';
 import { mockRecipes } from './recipe-defs';
 
 test('getRecipes gets an array', async () => {
-  return getRecipes().then(recipes => {
+  return getRecipes().then((recipes) => {
     expect(Array.isArray(recipes)).toBe(true);
   });
 });
 
-test('postRecipe', async () => {
-  const recipe = mockRecipes[0];
-  postRecipe(recipe).then(r => expect(r).toBe(true));
-});
+// TODO: make better integration test
+// test('postRecipe', async () => {
+//   const recipe = mockRecipes[0];
+//   postRecipe(recipe).then(r => expect(r).toBe(true));
+// });
 
 test('validate recipe', () => {
   const recipe = mockRecipes[0];
@@ -25,7 +26,7 @@ test('validate recipe', () => {
     instructions: recipe.instructions,
     image: recipe.image,
     source: recipe.source,
-    ingredients: recipe.ingredients
+    ingredients: recipe.ingredients,
   });
 });
 
@@ -35,20 +36,20 @@ describe(isValidIngredient, () => {
       isValidIngredient({
         name: 'sugar',
         quantity: '1/2 cup',
-        inValidKey: true
+        inValidKey: true,
       })
     ).toBe(false);
     expect(
       isValidIngredient({
         name: 'sugar',
-        quantity: '1/2 cup'
+        quantity: '1/2 cup',
       })
     ).toBe(true);
     expect(
       isValidIngredient({
         name: 'sugar',
         quantity: '1 cup',
-        details: 'unbleached is preferred'
+        details: 'unbleached is preferred',
       })
     ).toBe(true);
   });
@@ -69,7 +70,7 @@ describe(isValidIngredient, () => {
     expect(
       isValidIngredient({
         name: 'sugar',
-        quantity: ' '
+        quantity: ' ',
       })
     ).toBe(false);
   });

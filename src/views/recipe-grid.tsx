@@ -13,7 +13,7 @@ import {
   Grid,
   List,
   ListItem,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -26,27 +26,27 @@ export const RecipeGrid = ({ recipes }: { recipes: RecipeT[] }) => {
 
   const styles = makeStyles({
     grid: {
-      padding: '20px'
+      padding: '20px',
     },
     media: {
-      height: 200
+      height: 200,
     },
     actions: {
       display: 'flex',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
     },
     fab: {
       position: 'fixed',
       bottom: 20,
-      right: 20
-    }
+      right: 20,
+    },
   })();
 
   const [expandedElements, setExpandedElements] = useState<string[]>([]);
 
   const handleToggleIngredients = (id: string) =>
     expandedElements.includes(id)
-      ? setExpandedElements(expandedElements.filter(i => i !== id))
+      ? setExpandedElements(expandedElements.filter((i) => i !== id))
       : setExpandedElements([...expandedElements, id]);
 
   const handleRecipeClick = (name: string) =>
@@ -84,7 +84,7 @@ export const RecipeGrid = ({ recipes }: { recipes: RecipeT[] }) => {
                 <Collapse in={expandedElements.includes(_id)}>
                   <CardContent>
                     <List>
-                      {recipe.ingredients.map(i => (
+                      {recipe.ingredients.map((i) => (
                         <ListItem key={key()}>{i.name}</ListItem>
                       ))}
                     </List>

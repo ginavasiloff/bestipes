@@ -18,6 +18,8 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.6.5",
+    "dotenv": "^8.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router": "^5.1.2",
