@@ -20,10 +20,11 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import AddIcon from '@material-ui/icons/Add';
 import { RecipeT } from '../data/recipe-defs';
 import { key, slugify } from '../utils';
+import { useAuth0 } from '../auth0-context';
 
 export const RecipeGrid = ({ recipes }: { recipes: RecipeT[] }) => {
   let history = useHistory();
-
+  const { isLoading, user } = useAuth0();
   const styles = makeStyles({
     grid: {
       padding: '20px',
@@ -95,13 +96,15 @@ export const RecipeGrid = ({ recipes }: { recipes: RecipeT[] }) => {
           );
         })}
       </Grid>
-      <Fab
-        color='primary'
-        className={styles.fab}
-        onClick={() => handleClickAdd()}
-      >
-        <AddIcon />
-      </Fab>
+      {!isLoading && user && (
+        <Fab
+          color='primary'
+          className={styles.fab}
+          onClick={() => handleClickAdd()}
+        >
+          <AddIcon />
+        </Fab>
+      )}
     </>
   );
 };

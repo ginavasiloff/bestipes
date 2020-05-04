@@ -1,15 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Auth0Provider } from './auth0-context';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const rootEl = document.getElementById('root');
+const theme = createMuiTheme({
+  palette: {
+    secondary: {
+      main: '#ffffff',
+    },
+  },
+  typography: {
+    fontSize: 12,
+    h1: {
+      fontSize: '2rem',
+    },
+    h3: {
+      fontSize: '1.25rem',
+    },
+  },
+});
 
 ReactDOM.render(
   <Auth0Provider>
-    <App />
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
   </Auth0Provider>,
   document.getElementById('root')
 );

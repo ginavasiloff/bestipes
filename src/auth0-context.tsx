@@ -14,7 +14,7 @@ interface ContextValueType {
 }
 
 // create the context
-export const Auth0Context = createContext<ContextValueType | null>(null);
+export const Auth0Context: any = createContext<ContextValueType | null>(null);
 export const useAuth0: any = () => useContext(Auth0Context);
 
 interface IState {
@@ -49,7 +49,6 @@ export class Auth0Provider extends Component<{}, IState> {
   // initialize the auth0 library
   initializeAuth0 = async () => {
     console.log(this.config);
-
     const auth0Client = await createAuth0Client(this.config);
     this.setState({ auth0Client });
 
