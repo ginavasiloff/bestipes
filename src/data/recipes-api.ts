@@ -3,11 +3,16 @@ import { RecipeT } from './recipe-defs';
 const data_url = 'http://localhost:5000/recipes'; // TODO: don't hardcode
 
 export const getRecipes = async (url = data_url): Promise<RecipeT[]> => {
-  const res = await fetch(url).then((r) => r.json());
-  const recipes = Array.isArray(res)
-    ? res.reduce((acc, r) => (r ? [...acc, r] : acc), [])
-    : [];
-  return recipes;
+  try {
+    const res = await fetch(url).then((r) => r.json());
+    const recipes = Array.isArray(res)
+      ? res.reduce((acc, r) => (r ? [...acc, r] : acc), [])
+      : [];
+    return recipes;
+  } catch (ex) {
+    console.error(`Error in getRecipes\n ${ex}`);
+    return Promise.resolve([]);
+  }
 };
 
 export const postRecipe = async (recipe: RecipeT, url = data_url) => {

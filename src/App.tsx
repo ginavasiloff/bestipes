@@ -12,14 +12,17 @@ import { slugify } from './utils';
 import { useState, useEffect } from 'react';
 import { getRecipes } from './data/recipes-api';
 
+type AppConfig = {
+  apiUrl: string;
+};
+
 const App = () => {
   const [recipes, setRecipes] = useState<RecipeT[]>([]);
+
   useEffect(() => {
-    getRecipes().then((recipes) => setRecipes(recipes));
+    getRecipes().then((recipes) => recipes && setRecipes(recipes));
   }, []);
-  if (!Array.isArray(recipes)) {
-    return <h3>no recipes</h3>;
-  }
+
   return (
     <div className='App'>
       <Navbar />
@@ -27,7 +30,13 @@ const App = () => {
         <Route
           exact
           path='/'
-          component={() => <RecipeGrid recipes={recipes} />}
+          component={() =>
+            recipes.length > 0 ? (
+              <RecipeGrid recipes={recipes} />
+            ) : (
+              <Paper>No Recipes Available</Paper>
+            )
+          }
         />
         <Route exact path='/recipe/new' component={() => <NewRecipe />} />
         <Route

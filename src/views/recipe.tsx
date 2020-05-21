@@ -4,7 +4,7 @@ import {
   ListItem,
   Paper,
   makeStyles,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { key } from '../utils';
 import { RecipeT } from '../data/recipe-defs';
@@ -12,8 +12,8 @@ import { RecipeT } from '../data/recipe-defs';
 export const Recipe = ({ recipe }: { recipe: RecipeT }) => {
   const styles = makeStyles({
     main: {
-      padding: '20px'
-    }
+      padding: '20px',
+    },
   })();
 
   return (
@@ -25,7 +25,7 @@ export const Recipe = ({ recipe }: { recipe: RecipeT }) => {
           <span>Total Prep Time: {recipe.prepTime.total}</span>
         )}
         <List key={recipe._id}>
-          {recipe.ingredients.map(i => (
+          {recipe.ingredients.map((i) => (
             <ListItem key={key()}>
               <span>{i.name}</span>
               <span>{i.quantity}</span>

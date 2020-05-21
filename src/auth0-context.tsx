@@ -1,5 +1,5 @@
 import React, { Component, createContext, useContext } from 'react';
-import createAuth0Client from '@auth0/auth0-spa-js';
+import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js';
 import Auth0Client from '@auth0/auth0-spa-js';
 
 interface ContextValueType {
