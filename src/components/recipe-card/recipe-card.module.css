@@ -1,0 +1,8 @@
+.media {
+  min-height: 200px;
+}
+
+.actions {
+  display: 'flex';
+  justify-content: 'space-between';
+}

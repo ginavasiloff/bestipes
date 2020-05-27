@@ -33,9 +33,6 @@ export const Recipe = ({ recipe }: { recipe: RecipeT }) => {
             </ListItem>
           ))}
         </List>
-        {/*<List>
-          {recipe.instructions.map(i => (<ListItem>{i}</ListItem>))}
-        </List> */}
       </Paper>
     </div>
   );
