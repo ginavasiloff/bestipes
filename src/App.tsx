@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { Paper } from '@material-ui/core';
 
 import { Navbar } from './components/navbar';
@@ -11,44 +11,64 @@ import { MatchT } from './app-defs';
 import { slugify } from './utils';
 import { useState, useEffect } from 'react';
 import { getRecipes } from './data/recipes-api';
-
-type AppConfig = {
-  apiUrl: string;
-};
+import styles from './app.module.css';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const App = () => {
   const [recipes, setRecipes] = useState<RecipeT[]>([]);
+  const location = useLocation();
 
   useEffect(() => {
     getRecipes().then((recipes) => recipes && setRecipes(recipes));
   }, []);
-
   return (
     <div className='App'>
       <Navbar />
-      <Switch>
+      <main className={styles.main}>
         <Route
-          exact
-          path='/'
-          component={() =>
-            recipes.length > 0 ? (
-              <RecipeGrid recipes={recipes} />
-            ) : (
-              <Paper>No Recipes Available</Paper>
-            )
-          }
-        />
-        <Route exact path='/recipe/new' component={() => <NewRecipe />} />
-        <Route
-          path='/recipe/:name'
-          component={({ match }: { match: MatchT }) => {
-            const recipe = recipes.find(
-              (r) => slugify(r.name) === match.params.name
+          render={() => {
+            return (
+              <TransitionGroup component={null}>
+                <CSSTransition
+                  key={location.key}
+                  classNames='fade'
+                  timeout={300}
+                >
+                  <div className={styles.view}>
+                    <Switch location={location}>
+                      <Route
+                        exact
+                        path='/'
+                        component={() =>
+                          recipes.length > 0 ? (
+                            <RecipeGrid recipes={recipes} />
+                          ) : (
+                            <Paper>No Recipes Available</Paper>
+                          )
+                        }
+                      />
+                      <Route exact path='/recipe/new' component={NewRecipe} />
+                      <Route
+                        path='/recipe/:name'
+                        component={({ match }: { match: MatchT }) => {
+                          const recipe = recipes.find(
+                            (r) => slugify(r.name) === match.params.name
+                          );
+                          return recipe ? (
+                            <Recipe recipe={recipe} />
+                          ) : (
+                            <Paper>404</Paper>
+                          );
+                        }}
+                      />
+                    </Switch>
+                  </div>
+                </CSSTransition>
+              </TransitionGroup>
             );
-            return recipe ? <Recipe recipe={recipe} /> : <Paper>404</Paper>;
           }}
         />
-      </Switch>
+      </main>
     </div>
   );
 };

@@ -11,7 +11,6 @@ export const Navbar = withRouter(() => {
     logout,
     isAuthenticated,
   } = useAuth0();
-
   const alignLeft = {
     justifySelf: 'flex-end',
     marginLeft: 'auto',

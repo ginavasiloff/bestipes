@@ -28,7 +28,6 @@ export const RecipeGrid = ({ recipes }: { recipes: RecipeT[] }) => {
     <>
       <Grid className={styles.grid} container direction='row' spacing={2}>
         {recipes?.map((recipe: RecipeT) => {
-          // const { _id, image, name } = { ...recipe };
           return (
             <Grid item md={3} xs={12} key={recipe._id}>
               <RecipeCard recipe={recipe} />

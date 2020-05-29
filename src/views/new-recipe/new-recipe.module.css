@@ -1,0 +1,19 @@
+.formWrap {
+  padding: 20px;
+  max-width: 500px;
+}
+
+.ingredient {
+  display: flex;
+  margin: 10px 0;
+  max-width: 350px;
+  justify-content: space-between;
+}
+
+.details {
+  max-width: 350px;
+}
+
+.formWrap form > div {
+  margin-bottom: 40px;
+}
