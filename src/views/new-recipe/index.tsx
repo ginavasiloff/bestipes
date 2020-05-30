@@ -7,12 +7,17 @@ import {
   TextField,
   TextareaAutosize,
   Typography,
+  Box,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import styles from './new-recipe.module.css';
 import { IngredientT, RecipeT } from '../../data/recipe-defs';
-import { postRecipe, validateRecipe } from '../../data/recipes-api';
+import {
+  postRecipe,
+  validateRecipe,
+  uploadRecipe,
+} from '../../data/recipes-api';
 
 export const NewRecipe = () => {
   const newRecipe: RecipeT = {
@@ -30,6 +35,7 @@ export const NewRecipe = () => {
   };
 
   const [recipe, setRecipe] = useState(newRecipe);
+  const [uploadUrl, setUploadUrl] = useState(recipe.source);
 
   const handleUpdateRecipe = (key: string, value: any) => {
     setRecipe({ ...recipe, [key]: value });
@@ -67,12 +73,24 @@ export const NewRecipe = () => {
     !!valid && postRecipe(valid);
   };
 
+  const onKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      uploadUrl && uploadRecipe(uploadUrl);
+    }
+  };
   return (
     <>
       <Typography variant='h1'>Add a Recipe</Typography>
       <Paper className={styles.formWrap}>
+        <TextField
+          fullWidth
+          label='Upload url'
+          value={uploadUrl}
+          onChange={(e) => setUploadUrl(e.target.value)}
+          onKeyPress={(e) => onKeyPress(e)}
+        />
         <form autoComplete='off' onSubmit={(e) => handleSubmit(e)}>
-          <div className={styles.details}>
+          <Box component='div' className={styles.details}>
             <TextField
               fullWidth
               label='Recipe Name'
@@ -88,8 +106,8 @@ export const NewRecipe = () => {
               label='source'
               onChange={(e) => handleUpdateRecipe('source', e.target.value)}
             />
-          </div>
-          <div>
+          </Box>
+          <Box component='div'>
             <Typography variant='h3'>
               Ingredients{' '}
               <IconButton
@@ -106,7 +124,7 @@ export const NewRecipe = () => {
               </IconButton>
             </Typography>
             {recipe.ingredients.map((i, idx) => (
-              <div className={styles.ingredient}>
+              <Box component='span' className={styles.ingredient}>
                 <TextField
                   label='ingredient'
                   value={i.name}
@@ -136,10 +154,10 @@ export const NewRecipe = () => {
                 >
                   <DeleteIcon />
                 </IconButton>
-              </div>
+              </Box>
             ))}
-          </div>
-          <div>
+          </Box>
+          <Box component='div'>
             <Typography variant='h3'>
               Instructions{' '}
               <IconButton
@@ -162,7 +180,7 @@ export const NewRecipe = () => {
                 onChange={(e) => handleUpdateInstructions(e.target.value, idx)}
               />
             ))}
-          </div>
+          </Box>
           <Button type='submit' color='primary'>
             Submit
           </Button>

@@ -24,6 +24,14 @@ export const postRecipe = async (recipe: RecipeT, url = data_url) => {
   return true;
 };
 
+export const uploadRecipe = async (url: string) => {
+  const req = {
+    method: 'POST',
+    data: url,
+  };
+  fetch(data_url + '/upload', req);
+};
+
 export const validateRecipe = (obj: Partial<RecipeT>): RecipeT | null => {
   if (!obj.name || !obj.ingredients || !obj.instructions || !obj.image) {
     return null;
