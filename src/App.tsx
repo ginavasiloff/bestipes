@@ -13,14 +13,19 @@ import { useState, useEffect } from 'react';
 import { getRecipes } from './data/recipes-api';
 import styles from './app.module.css';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { AddRecipeFab } from './components/add-fab';
+import { useAuth0 } from './auth0-context';
 
 const App = () => {
   const [recipes, setRecipes] = useState<RecipeT[]>([]);
   const location = useLocation();
+  const { isLoading, user } = useAuth0();
 
+  const shouldShowAdd = !isLoading && user && location.pathname === '/';
   useEffect(() => {
     getRecipes().then((recipes) => recipes && setRecipes(recipes));
   }, []);
+
   return (
     <div className='App'>
       <Navbar />
@@ -41,7 +46,9 @@ const App = () => {
                         path='/'
                         component={() =>
                           recipes.length > 0 ? (
-                            <RecipeGrid recipes={recipes} />
+                            <>
+                              <RecipeGrid recipes={recipes} />
+                            </>
                           ) : (
                             <Paper>No Recipes Available</Paper>
                           )
@@ -68,6 +75,7 @@ const App = () => {
             );
           }}
         />
+        {shouldShowAdd && <AddRecipeFab className={styles.mainFab} />}
       </main>
     </div>
   );

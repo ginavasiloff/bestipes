@@ -8,5 +8,19 @@
   bottom: 0;
   left: 0;
   right: 0;
+  padding: 1rem;
   background-color: #ffffff;
+}
+
+.main .mainFab {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.App .navBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
