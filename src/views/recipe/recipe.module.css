@@ -1,0 +1,21 @@
+.recipe {
+  padding: 1rem;
+}
+
+.contents {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -1rem;
+  padding-top: 1rem;
+}
+
+.instructions {
+  max-width: 750px;
+}
+.contents > span {
+  padding: 1rem;
+}
+
+.recipe li {
+  padding: 0.5rem 0;
+}
