@@ -19,8 +19,7 @@ import { useAuth0 } from './auth0-context';
 const App = () => {
   const [recipes, setRecipes] = useState<RecipeT[]>([]);
   const location = useLocation();
-  const { isLoading, user } = useAuth0();
-
+  const { isAuthenticated, isLoading, user } = useAuth0();
   const shouldShowAdd = !isLoading && user && location.pathname === '/';
   useEffect(() => {
     getRecipes().then((recipes) => recipes && setRecipes(recipes));
@@ -54,7 +53,17 @@ const App = () => {
                           )
                         }
                       />
-                      <Route exact path='/recipe/new' component={NewRecipe} />
+                      {isAuthenticated ? (
+                        <Route exact path='/recipe/new' component={NewRecipe} />
+                      ) : (
+                        <Route
+                          exact
+                          path='/recipe/new'
+                          component={() => (
+                            <Paper>You must first sign in.</Paper>
+                          )}
+                        />
+                      )}
                       <Route
                         path='/recipe/:name'
                         component={({ match }: { match: MatchT }) => {

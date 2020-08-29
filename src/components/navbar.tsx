@@ -21,11 +21,11 @@ export const Navbar = withRouter(() => {
         <Button color='secondary' component={Link} to={'/'}>
           Bestipes
         </Button>
-        {isAuthenticated && (
-          <Button color='secondary' component={Link} to={'/recipe/new'}>
-            New Recipe
-          </Button>
-        )}
+        {/* {isAuthenticated && ( */}
+        <Button color='secondary' component={Link} to={'/recipe/new'}>
+          New Recipe
+        </Button>
+        {/* )} */}
 
         {!isLoading && !user && (
           <Button

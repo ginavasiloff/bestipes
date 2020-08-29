@@ -48,7 +48,6 @@ export class Auth0Provider extends Component<{}, IState> {
 
   // initialize the auth0 library
   initializeAuth0 = async () => {
-    console.log(this.config);
     const auth0Client = await createAuth0Client(this.config);
     this.setState({ auth0Client });
 

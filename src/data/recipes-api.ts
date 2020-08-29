@@ -27,9 +27,13 @@ export const postRecipe = async (recipe: RecipeT, url = data_url) => {
 export const uploadRecipe = async (url: string) => {
   const req = {
     method: 'POST',
-    data: url,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ uploadUrl: url }),
   };
-  fetch(data_url + '/upload', req);
+  const res = await fetch(data_url + '/upload', req);
+  return res;
 };
 
 export const validateRecipe = (obj: Partial<RecipeT>): RecipeT | null => {

@@ -73,9 +73,12 @@ export const NewRecipe = () => {
     !!valid && postRecipe(valid);
   };
 
-  const onKeyPress = (e: any) => {
-    if (e.key === 'Enter') {
-      uploadUrl && uploadRecipe(uploadUrl);
+  const onKeyPress = async (e: any) => {
+    if (e.key === 'Enter' && uploadUrl) {
+      const res = await uploadRecipe(uploadUrl);
+      const recipe = await res.json();
+      handleUpdateRecipe('name', recipe.name);
+      console.log(recipe);
     }
   };
   return (
@@ -95,6 +98,7 @@ export const NewRecipe = () => {
               fullWidth
               label='Recipe Name'
               onChange={(e) => handleUpdateRecipe('name', e.target.value)}
+              value={recipe.name}
             />
             <TextField
               fullWidth
