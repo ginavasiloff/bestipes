@@ -1,6 +1,6 @@
 import { RecipeT } from './recipe-defs';
 
-const data_url = 'http://localhost:5000/recipes'; // TODO: don't hardcode
+const data_url = process.env.REACT_APP_RECIPE_API ?? '';
 
 export const getRecipes = async (url = data_url): Promise<RecipeT[]> => {
   try {
